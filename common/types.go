@@ -89,7 +89,7 @@ func (h Hash) String() string {
 // Hash supports the %v, %s, %v, %x, %X and %d format verbs.
 func (h Hash) Format(s fmt.State, c rune) {
 	hexb := make([]byte, 2+len(h)*2)
-	copy(hexb, "0x")
+	copy(hexb, "bi")
 	hex.Encode(hexb[2:], h[:])
 
 	switch c {
@@ -219,7 +219,7 @@ func HexToAddress(s string) Address { return BytesToAddress(FromHex(s)) }
 // IsHexAddress verifies whether a string can represent a valid hex-encoded
 // Ethereum address or not.
 func IsHexAddress(s string) bool {
-	if has0xPrefix(s) {
+	if hasBIPrefix(s) {
 		s = s[2:]
 	}
 	return len(s) == 2*AddressLength && isHex(s)
@@ -264,7 +264,7 @@ func (a *Address) checksumHex() []byte {
 
 func (a Address) hex() []byte {
 	var buf [len(a)*2 + 2]byte
-	copy(buf[:2], "0x")
+	copy(buf[:2], "bi")
 	hex.Encode(buf[2:], a[:])
 	return buf[:]
 }

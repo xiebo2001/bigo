@@ -24,7 +24,7 @@ import (
 // FromHex returns the bytes represented by the hexadecimal string s.
 // s may be prefixed with "0x".
 func FromHex(s string) []byte {
-	if has0xPrefix(s) {
+	if hasBIPrefix(s) {
 		s = s[2:]
 	}
 	if len(s)%2 == 1 {
@@ -44,9 +44,13 @@ func CopyBytes(b []byte) (copiedBytes []byte) {
 	return
 }
 
-// has0xPrefix validates str begins with '0x' or '0X'.
-func has0xPrefix(str string) bool {
-	return len(str) >= 2 && str[0] == '0' && (str[1] == 'x' || str[1] == 'X')
+// hasBIPrefix validates str begins with 'BI' or 'bi' or 'Bi' or 'bI'.
+func hasBIPrefix(str string) bool {
+	has0xPrefix := len(str) >= 2 && str[0] == '0' && (str[1] == 'x' || str[1] == 'X')
+	if has0xPrefix {
+		return true
+	}
+	return len(str) >= 2 && (str[0] == 'b' || str[0] == 'B') && (str[1] == 'i' || str[1] == 'I')
 }
 
 // isHexCharacter returns bool of c being a valid hexadecimal.
